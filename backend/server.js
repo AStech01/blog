@@ -30,7 +30,7 @@ app.use(
       origin: [
       'http://localhost:3000', 
       'http://localhost:5173',
-      'https://blog-two-eosin-74.vercel.app/',
+      'https://blog-sand-three-15.vercel.app',
        'https://blog-git-main-astech01s-projects.vercel.app',
        'https://blog-j4hyqs179-astech01s-projects.vercel.app' // add your Vercel frontend
     ],
