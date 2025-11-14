@@ -206,6 +206,79 @@
 // app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 
 
+// require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const morgan = require('morgan');
+// const helmet = require('helmet');
+// const connectDB = require('./config/db');
+// const authRoutes = require('./routes/auth');
+// const blogRoutes = require('./routes/blogs');
+// const { notFound, errorHandler } = require('./middleware/errorHandler');
+// const path = require('path');
+
+// const app = express();
+// connectDB();
+
+// // Body parsing
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// // Helmet
+// app.use(
+//   helmet({
+//     crossOriginResourcePolicy: { policy: 'cross-origin' },
+//   })
+// );
+
+// // Morgan
+// app.use(morgan('dev'));
+
+// // ------------------------------------
+// // CORS (ONLY ONCE & CORRECT)
+// // ------------------------------------
+// const allowedOrigins = [
+//   'http://localhost:5173',
+//   'http://localhost:3000',
+//   'https://blog-sand-three-15.vercel.app',
+//   'https://blog-git-main-astech01s-projects.vercel.app'
+// ];
+
+// app.use(
+//   cors({
+//     origin: allowedOrigins,
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//   })
+// );
+
+// // ------------------------------------
+// // Static uploads folder
+// // ------------------------------------
+// app.use(
+//   '/uploads',
+//   (req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+//   },
+//   express.static(path.join(__dirname, 'uploads'))
+// );
+
+// // ------------------------------------
+// // Routes
+// // ------------------------------------
+// app.use('/api/auth', authRoutes);
+// app.use('/api/blogs', blogRoutes);
+
+// // Error handlers
+// app.use(notFound);
+// app.use(errorHandler);
+
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -220,23 +293,23 @@ const path = require('path');
 const app = express();
 connectDB();
 
-// Body parsing
+// -----------------------
+// Middleware
+// -----------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Helmet
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 
-// Morgan
 app.use(morgan('dev'));
 
-// ------------------------------------
-// CORS (ONLY ONCE & CORRECT)
-// ------------------------------------
+// -----------------------
+// CORS (ONLY ONE TIME)
+// -----------------------
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -246,16 +319,24 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("CORS not allowed for this origin: " + origin));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
-// ------------------------------------
+// Fix preflight
+
+// -----------------------
 // Static uploads folder
-// ------------------------------------
+// -----------------------
 app.use(
   '/uploads',
   (req, res, next) => {
@@ -265,15 +346,18 @@ app.use(
   express.static(path.join(__dirname, 'uploads'))
 );
 
-// ------------------------------------
+// -----------------------
 // Routes
-// ------------------------------------
+// -----------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 
-// Error handlers
+// -----------------------
+// Error Handlers
+// -----------------------
 app.use(notFound);
 app.use(errorHandler);
 
+// -----------------------
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
