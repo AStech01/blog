@@ -96,8 +96,8 @@ app.use(
     origin: [
       'http://localhost:3000',
       'http://localhost:5173',
-      'https://blog-git-main-astech01s-projects.vercel.app', // your real Vercel URL
-      'https://blog-sand-three-15.vercel.app' // optional older URL
+      'https://blog-git-main-astech01s-projects.vercel.app',
+      'https://blog-sand-three-15.vercel.app'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -105,8 +105,8 @@ app.use(
   })
 );
 
-// For preflight requests (important for axios)
-app.options('*', cors());
+// ⭐ FIXED OPTIONS for Express v5 ⭐
+
 
 app.use(express.json());
 
