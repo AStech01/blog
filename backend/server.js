@@ -27,7 +27,11 @@ app.use(morgan('dev'));
 // CORS must come before static
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+      origin: [
+      'http://localhost:3000', 
+      'http://localhost:5173',
+      'https://blog-pink-eta-79.vercel.app' // add your Vercel frontend
+    ],
     credentials: true,
   })
 );
