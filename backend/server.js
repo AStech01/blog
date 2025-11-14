@@ -1,6 +1,3 @@
-
-
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -24,21 +21,40 @@ app.use(
 
 app.use(morgan('dev'));
 
-// CORS must come before static
-app.use(
-  cors({
-      origin: [
-      'http://localhost:3000', 
-      'http://localhost:5173',
-      'https://blog-sand-three-15.vercel.app',
-       'https://blog-git-main-astech01s-projects.vercel.app',
-       'blog-1b3n2duko-astech01s-projects.vercel.app' // add your Vercel frontend
-    ],
-    credentials: true,
-  })
-);
+// --- CORS setup (replace previous cors block) ---
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://blog-sand-three-15.vercel.app',
+  'https://blog-git-main-astech01s-projects.vercel.app',
+  'https://blog-1b3n2duko-astech01s-projects.vercel.app'
+  // add your other Vercel domains here (include https://)
+];
 
-app.use(express.json());
+// allow override from env (comma separated)
+if (process.env.ALLOWED_ORIGINS) {
+  const extras = process.env.ALLOWED_ORIGINS.split(',').map(s => s.trim()).filter(Boolean);
+  allowedOrigins.push(...extras);
+}
+
+app.use((req, res, next) => {
+  const origin = req.get('origin');
+  // Allow requests with no origin (curl, server-to-server) or matching allowed origins
+  if (!origin || allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if (req.method === 'OPTIONS') return res.sendStatus(204);
+  } else {
+    // Optional: for debugging, respond with a 403 for unknown origins
+    // return res.status(403).send('CORS origin denied');
+  }
+  next();
+});
+
+// also register app.options for all routes
+app.options('*', (req, res) => res.sendStatus(204));
 
 // Serve uploads with explicit CORS headers
 app.use(
