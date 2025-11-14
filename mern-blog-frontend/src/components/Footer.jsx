@@ -1,62 +1,94 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-8 mt-12">
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center md:items-start">
+    <footer className="bg-gray-900 text-gray-300 pt-16 mt-20 relative overflow-hidden">
+    
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
+      
+      <div className="max-w-7xl mx-auto px-8 py-10">
         
-     
-        <div className="mb-6 md:mb-0">
-          <h1 className="text-2xl font-bold text-blue-400">MyBlog</h1>
-          <p className="text-gray-400 mt-2 text-sm">
-            Sharing ideas, tips, and tutorials.
-          </p>
-        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 border-b border-gray-800 pb-10">
+          
+          
+          <div className="col-span-2">
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 tracking-wider">
+              MyBlog
+            </h1>
+            <p className="mt-4 text-base text-gray-400 max-w-sm">
+              Exploring the latest in tech, development, and creative thinking. Join our community!
+            </p>
+          </div>
 
-   
-        <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+          {/* 2. Quick Links */}
           <div>
-            <h2 className="font-semibold mb-2">Pages</h2>
-            <ul className="space-y-1">
+            <h2 className="text-lg font-bold mb-4 text-white uppercase tracking-wider">Navigate</h2>
+            <ul className="space-y-3 text-sm">
               <li>
-                <Link to="/" className="hover:text-blue-400">Home</Link>
+                <Link to="/" className="text-gray-400 hover:text-cyan-400 transition duration-300">
+                  Home
+                </Link>
               </li>
               <li>
-                <Link to="/blogs" className="hover:text-blue-400">Blogs</Link>
+                <Link to="/blogs" className="text-gray-400 hover:text-cyan-400 transition duration-300">
+                  Blogs
+                </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-blue-400">About</Link>
+                <Link to="/about" className="text-gray-400 hover:text-cyan-400 transition duration-300">
+                  About Us
+                </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-blue-400">Contact</Link>
+                <Link to="/contact" className="text-gray-400 hover:text-cyan-400 transition duration-300">
+                  Contact
+                </Link>
               </li>
             </ul>
           </div>
 
-   
-          <div>
-            <h2 className="font-semibold mb-2">Follow Me</h2>
-            <div className="flex space-x-4 text-xl">
-              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                <FaGithub />
-              </a>
-              <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">
-                <FaLinkedin />
-              </a>
-              <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-                <FaTwitter />
-              </a>
+         
+          <div className="hidden md:block">
+            <h2 className="text-lg font-bold mb-4 text-white uppercase tracking-wider">Resources</h2>
+            <ul className="space-y-3 text-sm">
+              <li><a href="#" className="text-gray-400 hover:text-cyan-400 transition duration-300">FAQs</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-cyan-400 transition duration-300">Privacy Policy</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-cyan-400 transition duration-300">Terms of Service</a></li>
+            </ul>
+          </div>
+          
+         
+          <div className="col-span-2 md:col-span-1">
+            <h2 className="text-lg font-bold mb-4 text-white uppercase tracking-wider">Connect</h2>
+            <div className="flex space-x-4">
+              
+              {[
+                { Icon: FaGithub, href: "https://github.com/", color: "hover:text-white" },
+                { Icon: FaLinkedin, href: "https://linkedin.com/", color: "hover:text-blue-500" },
+                { Icon: FaTwitter, href: "https://twitter.com/", color: "hover:text-cyan-400" },
+              ].map(({ Icon, href, color }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`p-3 rounded-full border border-gray-700 text-gray-400 text-xl transition duration-300 ease-in-out transform hover:scale-110 ${color}`}
+                  aria-label={`Link to ${Icon.name.replace('Fa', '')}`}
+                >
+                  <Icon />
+                </a>
+              ))}
             </div>
           </div>
         </div>
-      </div>
 
-      
-      <div className="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} MyBlog. All rights reserved.
+        
+        <div className="mt-8 text-center text-xs text-gray-500">
+          &copy; {new Date().getFullYear()} MyBlog. All rights reserved. Built with React and Tailwind CSS.
+        </div>
       </div>
     </footer>
   );
