@@ -31,7 +31,8 @@ app.use(
       'http://localhost:3000', 
       'http://localhost:5173',
       'https://blog-pink-eta-79.vercel.app',
-       'https://blog-git-main-astech01s-projects.vercel.app' // add your Vercel frontend
+       'https://blog-git-main-astech01s-projects.vercel.app',
+       'https://blog-j4hyqs179-astech01s-projects.vercel.app' // add your Vercel frontend
     ],
     credentials: true,
   })
