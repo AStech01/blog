@@ -8,7 +8,7 @@ export default function BlogCard({ blog, showActions, onDelete }) {
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition transform hover:-translate-y-1">
       <Link to={`/blogs/${blog._id}`} className="no-underline">
-        <img
+        {/* <img
           src={
             blog.coverImageUrl
               ? blog.coverImageUrl.startsWith('http')
@@ -18,7 +18,19 @@ export default function BlogCard({ blog, showActions, onDelete }) {
           }
           alt={blog.title}
           className="w-full h-48 object-cover"
-        />
+        /> */}
+        <img
+  src={
+    blog.coverImageUrl
+      ? blog.coverImageUrl.startsWith('http')
+        ? blog.coverImageUrl
+        : `${import.meta.env.VITE_UPLOADS_BASE}${blog.coverImageUrl}`
+      : '/default-image.png'
+  }
+  alt={blog.title}
+  className="w-full h-48 object-cover"
+/>
+
         <div className="p-5">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">{blog.title}</h2>
           <p className="text-gray-600 mb-3 line-clamp-3">{blog.description}</p>
