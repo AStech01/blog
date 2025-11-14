@@ -1,14 +1,22 @@
 import axios from "axios";
 
+const rawBase =
+  (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_API_BASE) ||
+  (typeof process !== "undefined" && process.env.REACT_APP_API_BASE) ||
+  "http://localhost:5000";
+
+const baseURL = rawBase.replace(/\/$/, "") + "/api";
+
 const API = axios.create({
-  // Prefer env var in production; fallback to local server + /api prefix
-  baseURL:
-    (typeof process !== "undefined" &&
-      process.env.REACT_APP_API_BASE &&
-      process.env.REACT_APP_API_BASE.replace(/\/$/, "")) ||
-    "http://localhost:5000/api",
-  // include credentials if you rely on cookies (optional)
-  // withCredentials: true,
+  baseURL,
+  // withCredentials: true, // enable if you use cookie auth
+});
+
+// Attach JWT automatically if present
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
+  return config;
 });
 
 export default API;
