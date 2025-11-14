@@ -495,7 +495,6 @@ app.use(
 );
 
 // Handle preflight
-app.options("*", cors());
 
 // -----------------------
 // Static files
