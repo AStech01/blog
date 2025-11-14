@@ -32,7 +32,7 @@ app.use(
       'http://localhost:5173',
       'https://blog-sand-three-15.vercel.app',
        'https://blog-git-main-astech01s-projects.vercel.app',
-       'https://blog-j4hyqs179-astech01s-projects.vercel.app' // add your Vercel frontend
+       'blog-1b3n2duko-astech01s-projects.vercel.app' // add your Vercel frontend
     ],
     credentials: true,
   })
