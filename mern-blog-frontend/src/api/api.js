@@ -2,7 +2,7 @@ import axios from "axios";
 
 const rawBase =
   (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_API_BASE) ||
-  (typeof process !== "undefined" && process.env.REACT_APP_API_BASE) ||
+  (typeof process !== "undefined" && process.env.VITE_API_BASE) ||
   "http://localhost:5000";
 
 const baseURL = rawBase.replace(/\/$/, "") + "/api";
