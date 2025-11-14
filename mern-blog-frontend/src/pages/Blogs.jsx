@@ -45,7 +45,7 @@ export default function Blogs() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await API.get("/blogs");
+        const res = await API.get("/api/blogs");
         setBlogs(res.data);
       } catch (err) {
         console.error("Error fetching blogs:", err);
