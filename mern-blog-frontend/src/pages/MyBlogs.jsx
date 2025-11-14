@@ -20,9 +20,14 @@ export default function MyBlogs() {
       try {
         const token = localStorage.getItem("token");
         console.log("Fetching /blogs/myblogs, token present:", !!token);
+        // const res = await API.get("/blogs/myblogs", {
+        //   headers: { Authorization: token ? `Bearer ${token}` : "" },
+        // });
         const res = await API.get("/blogs/myblogs", {
-          headers: { Authorization: token ? `Bearer ${token}` : "" },
-        });
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
         console.log("MyBlogs response:", res.data);
         setBlogs(res.data);
       } catch (err) {
