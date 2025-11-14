@@ -1,6 +1,72 @@
 
 
 
+// require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const morgan = require('morgan');
+// const helmet = require('helmet');
+// const connectDB = require('./config/db');
+// const authRoutes = require('./routes/auth');
+// const blogRoutes = require('./routes/blogs');
+// const { notFound, errorHandler } = require('./middleware/errorHandler');
+// const path = require('path');
+
+// const app = express();
+// connectDB();
+
+// // Configure helmet to allow cross-origin resource loading for uploads
+// app.use(
+//   helmet({
+//     crossOriginResourcePolicy: { policy: 'cross-origin' }, // allow images to be loaded cross-origin
+//   })
+// );
+
+// app.use(morgan('dev'));
+
+// // CORS must come before static
+// app.use(
+//   cors({
+//       origin: [
+//       'http://localhost:3000', 
+//       'http://localhost:5173',
+//       'https://blog-sand-three-15.vercel.app' // add your Vercel frontend
+//     ],
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"]
+//   })
+// );
+
+// app.use(express.json());
+
+// // Serve uploads with explicit CORS headers
+// app.use(
+//   '/uploads',
+//   (req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+//   },
+//   express.static(path.join(__dirname, 'uploads'))
+// );
+// app.get('/', (req, res) => {
+//   res.send('✅ Backend server is running!');
+// });
+
+// // Routes
+// app.use('/api/auth', authRoutes);
+// app.use('/api/blogs', blogRoutes);
+
+// // Error handlers (after routes)
+// app.use(notFound);
+// app.use(errorHandler);
+
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -15,30 +81,36 @@ const path = require('path');
 const app = express();
 connectDB();
 
-// Configure helmet to allow cross-origin resource loading for uploads
+// Helmet Config
 app.use(
   helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' }, // allow images to be loaded cross-origin
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 
 app.use(morgan('dev'));
 
-// CORS must come before static
+// ⭐ FIXED CORS — MUST BE BEFORE ROUTES & STATIC ⭐
 app.use(
   cors({
-      origin: [
-      'http://localhost:3000', 
+    origin: [
+      'http://localhost:3000',
       'http://localhost:5173',
-      'https://blog-sand-three-15.vercel.app' // add your Vercel frontend
+      'https://blog-git-main-astech01s-projects.vercel.app', // your real Vercel URL
+      'https://blog-sand-three-15.vercel.app' // optional older URL
     ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 
+// For preflight requests (important for axios)
+app.options('*', cors());
+
 app.use(express.json());
 
-// Serve uploads with explicit CORS headers
+// Serve uploads
 app.use(
   '/uploads',
   (req, res, next) => {
@@ -49,15 +121,17 @@ app.use(
   },
   express.static(path.join(__dirname, 'uploads'))
 );
+
+// Base route
 app.get('/', (req, res) => {
   res.send('✅ Backend server is running!');
 });
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 
-// Error handlers (after routes)
+// Error handlers
 app.use(notFound);
 app.use(errorHandler);
 
