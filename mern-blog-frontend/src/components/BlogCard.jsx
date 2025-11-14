@@ -1,35 +1,29 @@
-
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+
+const uploadsBase =
+  (import.meta.env.VITE_UPLOADS_BASE && String(import.meta.env.VITE_UPLOADS_BASE).replace(/\/$/, '')) ||
+  (import.meta.env.VITE_API_BASE && String(import.meta.env.VITE_API_BASE).replace(/\/$/, '') + '/uploads') ||
+  'http://localhost:5000/uploads';
+
+const buildImgSrc = (cover) => {
+  if (!cover) return '/default-image.png';
+  const s = String(cover);
+  if (s.startsWith('http')) return s;
+  if (s.startsWith('/')) return `${uploadsBase}${s}`; // uploadsBase already has no trailing slash
+  return `${uploadsBase}/${s}`;
+};
 
 export default function BlogCard({ blog, showActions, onDelete }) {
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden transition transform hover:-translate-y-1">
       <Link to={`/blogs/${blog._id}`} className="no-underline">
-        {/* <img
-          src={
-            blog.coverImageUrl
-              ? blog.coverImageUrl.startsWith('http')
-                ? blog.coverImageUrl
-                : `http://localhost:5000${blog.coverImageUrl}`
-              : '/default-image.png'
-          }
+        <img
+          src={buildImgSrc(blog.coverImageUrl)}
           alt={blog.title}
           className="w-full h-48 object-cover"
-        /> */}
-        <img
-  src={
-    blog.coverImageUrl
-      ? blog.coverImageUrl.startsWith('http')
-        ? blog.coverImageUrl
-        : `${import.meta.env.VITE_UPLOADS_BASE}${blog.coverImageUrl}`
-      : '/default-image.png'
-  }
-  alt={blog.title}
-  className="w-full h-48 object-cover"
-/>
+        />
 
         <div className="p-5">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">{blog.title}</h2>
