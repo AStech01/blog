@@ -44,11 +44,10 @@ export default function BlogDetail() {
   if (loading) return <div className="p-8 text-center">Loading...</div>;
   if (!blog) return <div className="p-8 text-center text-red-600">Not found</div>;
 
-  // Simple check: if user is logged in AND blog exists, allow edit/delete
-  // (Backend will validate ownership on PUT/DELETE)
+ 
   const canEdit = !!user;
 
-  // determine img src (handle full URL or relative path from backend)
+
   const imgSrc =
     blog?.coverImageUrl
       ? String(blog.coverImageUrl).startsWith("http")
@@ -82,7 +81,7 @@ export default function BlogDetail() {
         {blog.description}
       </div>
 
-      {/* Edit & Delete buttons */}
+    
       {canEdit && (
         <div className="flex gap-3 border-t pt-6 mb-6">
           <button

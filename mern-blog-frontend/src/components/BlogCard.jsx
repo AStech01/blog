@@ -11,7 +11,7 @@ const buildImgSrc = (cover) => {
   if (!cover) return '/default-image.png';
   const s = String(cover);
   if (s.startsWith('http')) return s;
-  if (s.startsWith('/')) return `${uploadsBase}${s}`; // uploadsBase already has no trailing slash
+  if (s.startsWith('/')) return `${uploadsBase}${s}`; 
   return `${uploadsBase}/${s}`;
 };
 
@@ -32,7 +32,7 @@ export default function BlogCard({ blog, showActions, onDelete }) {
         </div>
       </Link>
 
-      {/* Show Edit/Delete buttons only if current user owns this blog */}
+    
       {showActions && (
         <div className="flex gap-2 p-5 pt-0">
           <Link

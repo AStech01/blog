@@ -2,9 +2,7 @@ const Blog = require('../models/Blog');
 const { validationResult } = require('express-validator');
 const path = require('path');
 
-// ----------------------
-// Create a new blog
-// ----------------------
+
 exports.createBlog = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -36,9 +34,7 @@ exports.createBlog = async (req, res) => {
   }
 };
 
-// ----------------------
-// Get all blogs (public)
-// ----------------------
+
 exports.listBlogs = async (req, res) => {
   try {
     const blogs = await Blog.find().populate('author', 'name email').sort({ createdAt: -1 });
@@ -49,9 +45,6 @@ exports.listBlogs = async (req, res) => {
   }
 };
 
-// ----------------------
-// Get single blog by ID
-// ----------------------
 exports.getBlog = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id).populate('author', 'name email');
@@ -63,9 +56,7 @@ exports.getBlog = async (req, res) => {
   }
 };
 
-// ----------------------
-// Get logged-in user's blogs
-// ----------------------
+
 exports.getMyBlogs = async (req, res) => {
   try {
     const userId = req.user?.id || req.user?._id;
@@ -79,9 +70,7 @@ exports.getMyBlogs = async (req, res) => {
   }
 };
 
-// ----------------------
-// Update blog
-// ----------------------
+
 exports.updateBlog = async (req, res) => {
   try {
     console.log('updateBlog - req.file:', req.file);
@@ -99,7 +88,7 @@ exports.updateBlog = async (req, res) => {
     if (req.file && req.file.filename) {
       blog.coverImageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     } else if (typeof coverImageUrl !== 'undefined') {
-      // only set if explicitly provided (avoid setting undefined)
+     
       blog.coverImageUrl = coverImageUrl || blog.coverImageUrl;
     }
 
@@ -111,9 +100,7 @@ exports.updateBlog = async (req, res) => {
   }
 };
 
-// ----------------------
-// Delete blog
-// ----------------------
+
 exports.deleteBlog = async (req, res) => {
   try {
     const userId = (req.user && (req.user.id || req.user._id)) || req.user;
@@ -121,7 +108,7 @@ exports.deleteBlog = async (req, res) => {
     
     if (!blog) return res.status(404).json({ message: "Blog not found" });
     
-    // Verify user owns this blog
+
     if (blog.author.toString() !== userId.toString()) {
       return res.status(403).json({ message: "Not authorized to delete" });
     }

@@ -9,10 +9,10 @@ const baseURL = rawBase.replace(/\/$/, "") + "/api";
 
 const API = axios.create({
   baseURL,
-  // withCredentials: true, // enable if you use cookie auth
+
 });
 
-// Attach JWT automatically if present
+
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers = { ...config.headers, Authorization: `Bearer ${token}` };

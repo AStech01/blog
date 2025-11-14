@@ -9,19 +9,19 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Login
+
   const login = async (email, password) => {
     const res = await API.post("/auth/login", { email, password });
     localStorage.setItem("token", res.data.token);
     setUser(res.data.user);
   };
 
-  // Register
+
   const register = async (name, email, password) => {
     await API.post("/auth/register", { name, email, password });
   };
 
-  // Logout
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);

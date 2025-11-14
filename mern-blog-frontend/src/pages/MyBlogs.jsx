@@ -35,7 +35,7 @@ export default function MyBlogs() {
       }
     };
     fetchMyBlogs();
-    // re-run when user changes OR when navigating with state.refresh (or any state change)
+   
   }, [user, navigate, location.state?.refresh, location.pathname]);
 
   return (

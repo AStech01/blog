@@ -1,4 +1,4 @@
-// middleware/authorizeAuthor.js
+
 const Blog = require('../models/Blog');
 
 async function authorizeAuthor(req, res, next) {
