@@ -29,20 +29,44 @@
 // export default API;
 
 
+// import axios from "axios";
+
+// // Base URL — from Vite or fallback to your live backend
+// const base =
+//   import.meta.env?.VITE_API_BASE ||
+//   "https://blog-3pxf.onrender.com"; // Render backend default
+
+// const baseURL = base.replace(/\/$/, "") + "/api";
+
+// const API = axios.create({
+//   baseURL,
+// });
+
+// // Add Authorization token automatically
+// API.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("token");
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
+
+// export default API;
+
+
 import axios from "axios";
 
-// Base URL — from Vite or fallback to your live backend
-const base =
-  import.meta.env?.VITE_API_BASE ||
-  "https://blog-3pxf.onrender.com"; // Render backend default
+const rawBase =
+  import.meta.env.VITE_API_BASE ||
+  "https://blog-3pxf.onrender.com";
 
-const baseURL = base.replace(/\/$/, "") + "/api";
+const baseURL = rawBase.replace(/\/$/, "") + "/api";
 
 const API = axios.create({
   baseURL,
 });
 
-// Add Authorization token automatically
+// Inject token
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
