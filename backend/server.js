@@ -67,6 +67,145 @@
 // app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 
+// require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const morgan = require('morgan');
+// const helmet = require('helmet');
+// const connectDB = require('./config/db');
+// const authRoutes = require('./routes/auth');
+// const blogRoutes = require('./routes/blogs');
+// const { notFound, errorHandler } = require('./middleware/errorHandler');
+// const path = require('path');
+
+// const app = express();
+// connectDB();
+
+// // Helmet Config
+// app.use(
+//   helmet({
+//     crossOriginResourcePolicy: { policy: 'cross-origin' },
+//   })
+// );
+
+// app.use(morgan('dev'));
+
+// // ⭐ FIXED CORS — MUST BE BEFORE ROUTES & STATIC ⭐
+// app.use(
+//   cors({
+//     origin: [
+//       'http://localhost:3000',
+//       'http://localhost:5173',
+//       'https://blog-git-main-astech01s-projects.vercel.app',
+//       'https://blog-sand-three-15.vercel.app'
+//     ],
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+//   })
+// );
+
+// // ⭐ FIXED OPTIONS for Express v5 ⭐
+
+
+// app.use(express.json());
+
+// // Serve uploads
+// app.use(
+//   '/uploads',
+//   (req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+//   },
+//   express.static(path.join(__dirname, 'uploads'))
+// );
+
+// // Base route
+// app.get('/', (req, res) => {
+//   res.send('✅ Backend server is running!');
+// });
+
+// // API Routes
+// app.use('/api/auth', authRoutes);
+// app.use('/api/blogs', blogRoutes);
+
+// // Error handlers
+// app.use(notFound);
+// app.use(errorHandler);
+
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const morgan = require('morgan');
+// const helmet = require('helmet');
+// const connectDB = require('./config/db');
+// const authRoutes = require('./routes/auth');
+// const blogRoutes = require('./routes/blogs');
+// const { notFound, errorHandler } = require('./middleware/errorHandler');
+// const path = require('path');
+
+// const app = express();
+// connectDB();
+
+// // FIRST → Body parsing
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// // Helmet
+// app.use(
+//   helmet({
+//     crossOriginResourcePolicy: { policy: 'cross-origin' },
+//   })
+// );
+
+// app.use(morgan('dev'));
+
+// // GLOBAL CORS
+// app.use(
+//   cors({
+//     origin: [
+//       'http://localhost:5173',
+//       'http://localhost:3000',
+//       'https://blog-sand-three-15.vercel.app',
+//       'https://blog-git-main-astech01s-projects.vercel.app'
+//     ],
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+//   })
+// );
+// app.use(cors(corsOptions));    // MUST BE FIRST
+// app.use(express.json()); 
+
+// // Preflight
+
+
+// // Uploads folder
+// app.use(
+//   '/uploads',
+//   (req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+//   },
+//   express.static(path.join(__dirname, 'uploads'))
+// );
+
+// // Routes
+// app.use('/api/auth', authRoutes);
+// app.use('/api/blogs', blogRoutes);
+
+// // Error handlers
+// app.use(notFound);
+// app.use(errorHandler);
+
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -81,53 +220,54 @@ const path = require('path');
 const app = express();
 connectDB();
 
-// Helmet Config
+// Body parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Helmet
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 
+// Morgan
 app.use(morgan('dev'));
 
-// ⭐ FIXED CORS — MUST BE BEFORE ROUTES & STATIC ⭐
+// ------------------------------------
+// CORS (ONLY ONCE & CORRECT)
+// ------------------------------------
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://blog-sand-three-15.vercel.app',
+  'https://blog-git-main-astech01s-projects.vercel.app'
+];
+
 app.use(
   cors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'https://blog-git-main-astech01s-projects.vercel.app',
-      'https://blog-sand-three-15.vercel.app'
-    ],
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
-// ⭐ FIXED OPTIONS for Express v5 ⭐
-
-
-app.use(express.json());
-
-// Serve uploads
+// ------------------------------------
+// Static uploads folder
+// ------------------------------------
 app.use(
   '/uploads',
   (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   },
   express.static(path.join(__dirname, 'uploads'))
 );
 
-// Base route
-app.get('/', (req, res) => {
-  res.send('✅ Backend server is running!');
-});
-
-// API Routes
+// ------------------------------------
+// Routes
+// ------------------------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 
@@ -136,4 +276,4 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
